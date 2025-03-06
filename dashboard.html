@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aerospace Maintenance Dashboard</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #0d1117;
+            color: white;
+        }
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+        }
+        .header {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Aerospace Maintenance Dashboard</h1>
+            <p>Real-time insights and predictive maintenance metrics</p>
+            <a href="main.html" class="btn btn-primary">Back to Home</a> <!-- Button to go back to the main page -->
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Real-Time Metrics</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">Engine Temperature: <span id="engineTemp">75°C</span></li>
+                            <li class="list-group-item">Vibration Level: <span id="vibrationLevel">0.5g</span></li>
+                            <li class="list-group-item">Fuel Level: <span id="fuelLevel">80%</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Predictive Maintenance Insights</h5>
+                        <canvas id="maintenanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Alerts & Notifications</h5>
+                        <div id="alerts" class="alert alert-warning" role="alert">
+                            No alerts at this time.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for the chart
+        const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Predicted Failures',
+                backgroundColor: 'rgba(88, 166, 255, 0.5)',
+                borderColor: 'rgba(88, 166, 255, 1)',
+                data: [0, 1, 2, 1, 3, 2, 4],
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Predicted Failures'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Months'
+                        }
+                    }
+                }
+            }
+        };
+
+        const maintenanceChart = new Chart(
+            document.getElementById('maintenanceChart'),
+            config
+        );
+
+        // Simulate real-time data updates
+        setInterval(() => {
+            // Update real-time metrics
+            document.getElementById('engineTemp').innerText = Math.floor(Math.random() * 100) + '°C';
+            document.getElementById('vibrationLevel').innerText = (Math.random() * 2).toFixed(2) + 'g';
+            document.getElementById('fuelLevel').innerText = Math.floor(Math.random() * 100) + '%';
+
+            // Update alerts
+            const alerts = document.getElementById('alerts');
+            if (Math.random() < 0.2) {
+                alerts.innerText = 'Alert: Engine temperature is too high!';
+                alerts.classList.add('alert-danger');
+            } else {
+                alerts.innerText = 'No alerts at this time.';
+                alerts.classList.remove('alert-danger');
+            }
+        }, 5000); // Update every 5 seconds
+    </script>
+</body>
+</html>
